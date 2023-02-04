@@ -1,0 +1,12 @@
+-r requirements.txt
+
+# Depedencies management
+pip-tools==6.12.2
+
+# Linting
+black==22.12.0
+isort==5.12.0
+
+# Typing
+mypy==0.991
+mypy-extensions==0.4.3
