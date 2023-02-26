@@ -20,7 +20,7 @@ class KeyCounter:
         with open("/usr/include/linux/input-event-codes.h") as fh:
             keycode_definitions = fh.read()
 
-        pattern = "#define\s+KEY_((?:LEFT|RIGHT)(?:CTRL|SHIFT))\s+(\d+)"
+        pattern = r"#define\s+KEY_((?:LEFT|RIGHT)(?:CTRL|SHIFT))\s+(\d+)"
         for key, scan_code in re.findall(pattern, keycode_definitions, re.MULTILINE):
             mapping[int(scan_code)] = key.lower()
         return mapping
