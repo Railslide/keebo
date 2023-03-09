@@ -1,11 +1,19 @@
 from typing import Dict, Generator
 import pymongo
+from pymongo.errors import ConnectionFailure
 
 
 class Db:
     def __init__(self) -> None:
         client = pymongo.MongoClient("localhost", 27017)
+        try:
+            # The ping command is cheap and does not require auth.
+            client.admin.command('ping')
+        except ConnectionFailure:
+            raise RuntimeError("Cannot connect to db")
         self.collection = client["keebo"]["keycounts"]
+        # from pymongo.errors import ConnectionFailure
+
 
     def update_count(self, key: str) -> None:
         """ 
