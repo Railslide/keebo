@@ -1,15 +1,15 @@
-import collections
-import json
 import re
-from typing import Dict, Optional
+from typing import Dict
 
 import keyboard
+
+import db
 
 
 class KeyCounter:
     def __init__(self):
         self.positional_keys = KeyCounter._get_positional_keys_mapping()
-        self._used_keys = collections.Counter()
+        self.db = db.Db()
 
     @classmethod
     def _get_positional_keys_mapping(cls) -> Dict[int, str]:
@@ -26,21 +26,24 @@ class KeyCounter:
         return mapping
 
     def register_key(self, key: keyboard.KeyboardEvent) -> None:
-        # The keyboard library doesn't discern between left and right ctrl/shift
-        if key.name in ("ctrl", "shift"):
-            try:
-                pressed_key = self.positional_keys[key.scan_code]
-            except KeyError:
-                print(f"Couldn't figure out if it was left or right {key.name}")
-                pressed_key = key.name
-            self._used_keys.update([pressed_key])
+        if not key.name:
+            self.db.update_count("unknown")
         else:
-            self._used_keys.update([key.name])
-        print(self._used_keys)
+            # The keyboard library doesn't discern between left and right ctrl/shift
+            if key.name in ("ctrl", "shift"):
+                try:
+                    pressed_key = self.positional_keys[key.scan_code]
+                except KeyError:
+                    print(f"Couldn't figure out if it was left or right {key.name}")
+                    pressed_key = key.name
+                self.db.update_count(pressed_key)
+            else:
+                self.db.update_count(key.name)
+        print(key.name)
 
     @property
-    def used_keys(self):
-        return self._used_keys
+    def key_stats(self):
+        self.db.get_stats()
 
 
 def main() -> None:
@@ -50,9 +53,7 @@ def main() -> None:
     try:
         keyboard.wait()
     except KeyboardInterrupt:
-        print("Saving before exiting..")
-        with open("key_stats.json", "w") as fh:
-            fh.write(json.dumps(dict(key_counter.used_keys)))
+        print(key_counter.key_stats)
         print("Done! Byeeee")
         exit()
 

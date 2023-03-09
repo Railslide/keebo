@@ -17,7 +17,7 @@ class Db:
         )
 
     def get_stats(self) -> Generator[Dict[str, int], None, None]:
-        all_keys = ({entry["key"]: entry["count"]} for entry in self.collection.find())
+        all_keys = ({entry["key_name"]: entry["count"]} for entry in self.collection.find())
         return all_keys
 
 
