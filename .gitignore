@@ -1,4 +1,8 @@
 key_stats.json
+db-data/
+
+# pyright
+pyrightconfig.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
