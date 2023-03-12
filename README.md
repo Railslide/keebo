@@ -18,7 +18,7 @@ sudo python src/keebo.py
 
 ## Gotcha
 
-- Keebo requires to be run with `sudo` in order to be able to listen to key press
-- It was only tested to work on Linux
-- Keebo is not a keylogger, it only stores the count of the key presses for each key (nonetheless it's a good habit to be mindful when typing passwords and other sensitive stuff)
+- Keebo requires to be run with `sudo` in order to be able to listen to key press.
+- It was only tested to work on Linux.
+- Keebo is not a keylogger, it only stores the count of the key presses for each key (nonetheless it's a good habit to be mindful when typing passwords and other sensitive stuff).
 - The database is not thought to be used anywhere else than your local machine. It's unsecure by design and it shouldn't be used in production. 
