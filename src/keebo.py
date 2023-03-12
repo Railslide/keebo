@@ -39,11 +39,10 @@ class KeyCounter:
                 self.db.update_count(pressed_key)
             else:
                 self.db.update_count(key.name)
-        print(key.name)
 
     @property
-    def key_stats(self):
-        self.db.get_stats()
+    def key_stats(self) -> list[dict[str, int]]:
+        return list(self.db.get_stats())
 
 
 def main() -> None:

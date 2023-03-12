@@ -4,4 +4,6 @@ services:
     image: docker.io/library/mongo
     ports:
       - "27017:27017"
+    volumes:
+      - ./db-data:/data/db
     restart: always
