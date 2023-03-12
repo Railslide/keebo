@@ -1,3 +1,4 @@
+import logging
 import re
 from typing import Dict
 
@@ -7,9 +8,9 @@ import db
 
 
 class KeyCounter:
-    def __init__(self):
+    def __init__(self, database: db.Db) -> None:
         self.positional_keys = KeyCounter._get_positional_keys_mapping()
-        self.db = db.Db()
+        self.db = database
 
     @classmethod
     def _get_positional_keys_mapping(cls) -> Dict[int, str]:
@@ -46,14 +47,21 @@ class KeyCounter:
 
 
 def main() -> None:
-    key_counter = KeyCounter()
+    logging.basicConfig(level=logging.DEBUG)
+
+    logging.info("Connecting to database...")
+    database = db.Db()
+
+    key_counter = KeyCounter(database)
     keyboard.on_press(key_counter.register_key)
 
+    logging.info("Listening to key presses...")
     try:
         keyboard.wait()
     except KeyboardInterrupt:
+        logging.info("Received exit signal")
         print(key_counter.key_stats)
-        print("Done! Byeeee")
+        logging.info("Byeee!")
         exit()
 
 
